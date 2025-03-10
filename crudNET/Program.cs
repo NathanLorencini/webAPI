@@ -1,5 +1,7 @@
 
 using crudNET.Data;
+using crudNET.Repositories;
+using crudNET.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace crudNET
@@ -11,8 +13,16 @@ namespace crudNET
             var builder = WebApplication.CreateBuilder(args);
 
             //Add DataBase
-            builder.Services.AddDbContext<SystemTasksDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
+            builder.Services.AddEntityFrameworkSqlServer()
+                .AddDbContext<SystemTasksDbContext>(
+                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+                );
+
+            builder.Services.AddScoped<IUserRepositorie, UserRepositorie>(); // injecao de dependencia, toda vez q chamar IUserRe.. vai vai buildar a UserRe
+
+            //builder.Services.AddDbContext<SystemTasksDbContext>(options =>
+            //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 
             // Add services to the container.

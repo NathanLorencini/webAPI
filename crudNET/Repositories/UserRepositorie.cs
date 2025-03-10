@@ -42,15 +42,19 @@ namespace crudNET.Repositories
             return dbContext.Users.FirstOrDefault(x => x.Id == id);
         }
 
-        public Task<UserModel> UpdateUser(UserModel user, int id)
+        public async Task<UserModel> UpdateUser(UserModel user, int id)
         {
-            var userToUpdate = GetUserById(id);
+            var userToUpdate = await GetUserById(id);
             
             if (userToUpdate is null)
                 throw new Exception("This User does not exist");
-            
-            dbContext.Users.UpdateRange(user);
+
+            userToUpdate.Email = user.Email;
+            userToUpdate.Name = user.Name;
+
+            dbContext.Users.Update(userToUpdate);
             dbContext.SaveChanges();
+            
             return userToUpdate;
         }
     }

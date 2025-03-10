@@ -1,4 +1,5 @@
-﻿using crudNET.Models;
+﻿using crudNET.Data.Map;
+using crudNET.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace crudNET.Data
@@ -14,7 +15,19 @@ namespace crudNET.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
-         base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfiguration(new TasksMap());
+            base.OnModelCreating(modelBuilder);
         }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=.\\SQLSERVER2022;Database=webapi;Trusted_Connection=True;TrustServerCertificate=True;");
+            }
+        }
+
     }
 }
