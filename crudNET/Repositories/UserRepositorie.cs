@@ -15,7 +15,7 @@ namespace crudNET.Repositories
 
         public async Task<UserModel> AddUser(UserModel user)
         {
-            dbContext.Users.Add(user);
+            await dbContext.Users.AddAsync(user);
             dbContext.SaveChanges();
             return user;
         }
@@ -23,10 +23,10 @@ namespace crudNET.Repositories
         public async Task<bool> DeleteUser(int id)
         {
             var userToDelete = await GetUserById(id);
+            
             if (userToDelete is null)
-            {
                 throw new Exception("This User does not exist");
-            }
+
             dbContext.Users.Remove(userToDelete);
             dbContext.SaveChanges();
             return true;

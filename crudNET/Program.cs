@@ -1,4 +1,7 @@
 
+using crudNET.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace crudNET
 {
     public class Program
@@ -6,6 +9,11 @@ namespace crudNET
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //Add DataBase
+            builder.Services.AddDbContext<SystemTasksDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
+
 
             // Add services to the container.
 
